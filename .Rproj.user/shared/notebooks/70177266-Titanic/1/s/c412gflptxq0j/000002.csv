@@ -1,0 +1,10 @@
+"0","getwd
+"
+"1","function () 
+"
+"1",".Internal(getwd())
+"
+"1","<bytecode: 0x0000021ac0a9a718>
+"
+"1","<environment: namespace:base>
+"

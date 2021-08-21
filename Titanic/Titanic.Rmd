@@ -1,0 +1,66 @@
+---
+title: "Titanic"
+author: "Celeste Hernandez"
+date: "8/13/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Mostrar la base de datos
+
+```{r load-data, echo = FALSE}
+titanic <- read.csv("../data/train.csv")
+```
+
+Para mostrar la base de datos usamos 
+
+```{r cargar-base, echo = FALSE}
+str(titanic)
+```
+
+## Supervivencia por clase
+
+```{r tablita}
+table(titanic$Survived, titanic$Pclass)
+```
+### Correlación entre las variables
+
+```{r correlacion}
+cor(titanic$Survived, titanic$Pclass)
+library(ggplot2)
+library(dplyr)
+library(reshape2)
+
+table(titanic$Survived, titanic$Pclass) %>%
+  melt() %>% as.data.frame() %>%
+  ggplot(aes(x = Var2, y = value, fill = factor(Var1))) + 
+    geom_bar(stat = "identity", position =  "dodge") +
+    labs(x = "Clase", y = "Personas", fill = "Supervivencia") +
+    scale_fill_discrete(labels = c("No sobrevive", "Sobrevive")) + 
+    theme_light()
+```
+
+# Qué hacer si tenemos datos faltantes?
+
+```{r datos-faltantes}
+#sum(is.na(titanic$Pclass))
+
+sapply(titanic,function(x){sum(is.na(x))})
+```
+```{r}
+ggplot(titanic,
+       aes(x = SameTicketNumber, y = Fare)) +
+  geom_point(shape= 1) +
+  geom_smooth(method = lm)
+```
+
+Veamos cuanto cuesta un boleto por clase
+```{r}
+ggplot(titanic,
+       aes(y = Fare, x = factor(Pclass),
+      fill = factor(Pclass))) +
+      geom_violin()
+```
