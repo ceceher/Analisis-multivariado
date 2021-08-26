@@ -24,8 +24,6 @@ library(tidyverse)
 pairs(iris[,-5],
   col = wes_palette(n = 5, name = "FantasticFox1", type = "continuous"))
 
-iris %>% 
-  gatherpairs
 ```
 
 Veamos en ggplot
@@ -62,7 +60,7 @@ pairs.panels(train[,-5],
 
 Para para los componentes principales usamos la función prcom
 
-```{r train y test}
+```{r Componentes principales}
 pc <- prcomp(train[,-5],
              center = T,
              scale. = T)
@@ -80,5 +78,43 @@ pairs.panels(pc$x,
 
 ```
 
+## Predicción
 
+```{r training y testing}
+pred <- predict(pc, train)
+
+training <- data.frame(pred, train[5])
+testing <- predict(pc, test)
+testing <- data.frame(testing, test[5])
+
+```
+
+```{r Prediccion}
+library(nnet)
+
+relevel(training$Species, ref = "setosa")
+
+modelo <- multinom(Species ~ PC1 + PC2, data = training)
+
+summary(modelo)
+
+prediccion <- predict(modelo, training)
+prediccion
+```
+
+#Matriz de confusion en la siguiente tablita
+Vemos cuantas predicciónes del modelo fueron correctas
+```{r Tablita de matriz de preticción para training}
+tablita <- table(prediccion, training$Species)
+1 - sum(diag(tablita)) / sum(tablita)
+tablita
+```
+
+Verificamos con los datos de testing 
+```{r Tablita de matriz de preticción para test}
+prediccion_test <- predict(modelo, testing)
+
+tablita_test <- table(prediccion_test, testing$Species)
+1 - sum(diag(tablita_test)) / sum(tablita_test)
+```
 
