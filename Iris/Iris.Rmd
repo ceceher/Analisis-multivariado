@@ -18,16 +18,67 @@ str(iris)
 Vamos a hacer unas gráficas de dispersión
 
 ```{r dispersion}
-pairs(iris[,-5])
+library(wesanderson)
+library(tidyverse)
+
+pairs(iris[,-5],
+  col = wes_palette(n = 5, name = "FantasticFox1", type = "continuous"))
+
+iris %>% 
+  gatherpairs
 ```
 
 Veamos en ggplot
 
-```{r ggplot-disperción}
+```{r ggplot-dispersión}
+
+
 iris %>% 
   ggplot(aes(x = Petal.Length, 
               y = Petal.Width,
               color = Species)) +
-           geom_point()
+           geom_point() +
+          scale_color_manual(values=wes_palette(n=3, name="FantasticFox1"))
          
 ```
+##Componentes principales 
+
+Para ver los componentes principales es necesario dividir los datos en train y test.
+```{r train y test}
+set.seed(42)
+ind <- sample(2, nrow(iris),
+                replace = T, 
+                prob = c(0.8, 0.20))
+train <- iris[ind == 1,]
+test <- iris[ind == 2,]
+
+library(psych)
+pairs.panels(train[,-5],
+             gap = 0,
+             bg = c(wes_palette(n = 4, name = "FantasticFox1"))[train$Species],
+             pch = 21,
+             lwd = 0)
+```
+
+Para para los componentes principales usamos la función prcom
+
+```{r train y test}
+pc <- prcomp(train[,-5],
+             center = T,
+             scale. = T)
+attributes(pc)
+
+pc$scale
+pc
+summary(pc)
+
+pairs.panels(pc$x,
+             gap = 0,
+             bg = c(wes_palette(n = 4, name = "FantasticFox1"))[train$Species],
+             pch = 21,
+             lwd = 0)
+
+```
+
+
+
