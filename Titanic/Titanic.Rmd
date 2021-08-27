@@ -69,6 +69,84 @@ ggplot(titanic,
       
 ```
 
+## Componentes Principales 
+```{r train y test}
+set.seed(42)
+ind <- sample(2, nrow(titanic),
+                replace = T, 
+                prob = c(0.8, 0.20))
+train <- titanic[ind == 1,]
+test <- titanic[ind == 2,]
+
+```
+
+
+
+Para ver los componentes principales es necesario dividir los datos en train y test.
+```{r train y test}
+library(magrittr)
+
+set.seed(42)
+ind <- sample(2, nrow(titanic),
+                replace = T, 
+                prob = c(0.8, 0.20))
+train <- titanic[ind == 1,]
+train %<>% select(2, 3, 5, 6:8, 10)
+test <- titanic[ind == 2,]
+test %<>% select(2, 3, 5, 6:8, 10)
+DF <- data.frame(model.matrix(~. -1, data = train))
+```
+
+#Correlación entre variables 
+
+```{r }
+df_cr <- cor(DF, method = "pearson")
+df_cr <- data.frame(cor = df_cr[1:8, 8])
+df_cr <- df_cr %>%
+  mutate(cor_abs = abs(cor))
+
+```
+Es necesario filtrar las var con cor > 0.2
+
+```{r filtrado}
+df_cr <- df_cr %>% 
+  filter(cor_abs>0.2)
+
+df_cr$var <- rownames(df_cr)
+
+df_filtrado <- DF %>%
+  select(Survived, one_of(as.character(df_cr$var)))
+
+pairs.panels(df_filtrado,
+             gap = 0,
+             bg = c(wes_palette(n = 4, name = "FantasticFox1"))[titanic$Survived],
+             pch = 21)
+
+```
+
+Para los componentes principales se usa la funcion prcom 
+
+```{r Componentes principales}
+str(train)
+pc <- prcomp(train,
+             na.action = T,
+             center = T,
+             scale. = T)
+attributes(pc)
+
+pc$scale
+pc
+summary(pc)
+
+pairs.panels(pc$x,
+             gap = 0,
+             bg = c(wes_palette(n = 4, name = "FantasticFox1"))[train$Survived],
+             pch = 21,
+             lwd = 0)
+
+```
+
+
 
 
 
