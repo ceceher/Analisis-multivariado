@@ -12,7 +12,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Mostrar la base de datos
 
 ```{r load-data, echo = FALSE}
-titanic <- read.csv("../data/train.csv")
+titanic <- read.csv("../data/titanic.csv")
 ```
 
 Para mostrar la base de datos usamos 
@@ -33,6 +33,8 @@ cor(titanic$Survived, titanic$Pclass)
 library(ggplot2)
 library(dplyr)
 library(reshape2)
+library(wesanderson)
+library(tidyverse)
 
 table(titanic$Survived, titanic$Pclass) %>%
   melt() %>% as.data.frame() %>%
@@ -53,8 +55,8 @@ sapply(titanic,function(x){sum(is.na(x))})
 ```{r}
 ggplot(titanic,
        aes(x = SameTicketNumber, y = Fare)) +
-  geom_point(shape= 1) +
-  geom_smooth(method = lm)
+       geom_point() +
+       geom_smooth(method = lm)
 ```
 
 Veamos cuanto cuesta un boleto por clase
@@ -62,5 +64,11 @@ Veamos cuanto cuesta un boleto por clase
 ggplot(titanic,
        aes(y = Fare, x = factor(Pclass),
       fill = factor(Pclass))) +
-      geom_violin()
+      geom_violin() +
+      scale_fill_manual(values = wes_palette(n = 3, name = "FantasticFox1"))
+      
 ```
+
+
+
+
