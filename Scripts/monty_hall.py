@@ -1,6 +1,7 @@
 from math import gamma
 import random
 from random import seed, randint
+import numpy
 
 def juego(Ganadora, Seleccionada, cambio = False):
     assert Ganadora < 3
@@ -19,5 +20,9 @@ def juego(Ganadora, Seleccionada, cambio = False):
     return Seleccionada == Ganadora
 
 if __name__ == '__main__':
-    juego(0, 1, True)
+    puertas = numpy.random.random_integers(0, 2, 10000)
     
+    ganadores = [p for p in puertas if juego(1, p)]
+    print("Porcentaje de ganadores sin cambio: " + str(len(ganadores)/len(puertas)))
+    ganadores = [p for p in puertas if juego(1, p, True)]
+    print("Porcentaje de ganadores con cambio: " + str(len(ganadores)/len(puertas)))
