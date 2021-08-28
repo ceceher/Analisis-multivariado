@@ -117,6 +117,8 @@ df_cr$var <- rownames(df_cr)
 df_filtrado <- DF %>%
   select(Survived, one_of(as.character(df_cr$var)))
 
+library(psych)
+
 pairs.panels(df_filtrado,
              gap = 0,
              bg = c(wes_palette(n = 4, name = "FantasticFox1"))[titanic$Survived],
