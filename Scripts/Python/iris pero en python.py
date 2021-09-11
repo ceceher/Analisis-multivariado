@@ -8,11 +8,6 @@ from sklearn.cluster import MiniBatchKMeans
 from sklearn import datasets
 
 
-
-
-
-
-
 iris = datasets.load_iris()
 X = iris.data[:, :2]
 y = iris.target
@@ -32,6 +27,7 @@ plt.scatter(X[:, 0], X[:, 1], c = y, cmap = plt.cm.Set1,
 # Meanshift para iris
 
 if __name__ == "__main__":
+        
     iris = datasets.load_iris()
     dataset = iris
 
@@ -65,5 +61,19 @@ if __name__ == "__main__":
     plt.show() 
     # No se porque sale una gráfica con 5 colores diferentes pero solo me marca 2 centro para los clusters 
 
+    #############################################
+    # Kmeans en Iris
+    #############################################
+
+    print("="*64 + "\n K-means en Iris \n" + "="*64)
+
+    kmeans = MiniBatchKMeans(n_clusters=4, batch_size=8).fit(X)
+    print("Total de centros: ", len(kmeans.cluster_centers_))
+    print("="*64)
+    print(kmeans.predict(X))
+
+    dataset['group'] = kmeans.predict(X)
+
+    print(dataset)
 
     
