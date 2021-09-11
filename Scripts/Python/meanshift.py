@@ -27,7 +27,7 @@ if __name__ == "__main__":
     pca_data = pca.transform(X)
     print(pca_data)
 
-    print("="*64 + "\n MakeShift de PCA \n" + "="*64)
+    print("="*64 + "\n MeanShift de PCA \n" + "="*64)
     meanshift = MeanShift().fit(pca_data)
 
     plt.scatter(pca_data[:, 0], 
