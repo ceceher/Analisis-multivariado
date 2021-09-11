@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+from matplotlib import pyplot as plt
 from numpy.core.fromnumeric import mean
 from sklearn.cluster import MeanShift
 from sklearn.decomposition import PCA
@@ -52,14 +52,18 @@ if __name__ == "__main__":
     pca_data = pca.transform(X)
     print(pca_data)
 
-    print("="*64 + "\n MakeShift de PCA \n" + "="*64)
+    print("="*64 + "\n MeanShift de PCA \n" + "="*64)
     meanshift = MeanShift().fit(pca_data)
 
     plt.scatter(pca_data[:, 0], 
                 pca_data[:, 1],
                 c = meanshift.predict(pca_data))
     plt.scatter(meanshift.cluster_centers_[:, 0], 
-                meanshift.cluster_centers_[:, 1], 
-                c = ['purple', 'cyan', 'yellow'],
+                meanshift.cluster_centers_[:, 1],
+                c = [ 'purple','yellow'],
                 s = 200)
-    plt.show()
+    plt.show() 
+    # No se porque sale una gráfica con 5 colores diferentes pero solo me marca 2 centro para los clusters 
+
+
+    

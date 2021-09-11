@@ -38,3 +38,4 @@ if __name__ == "__main__":
                 c = ['purple', 'cyan', 'yellow'],
                 s = 200)
     plt.show()
+    
