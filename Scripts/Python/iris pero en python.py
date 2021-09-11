@@ -24,13 +24,15 @@ plt.scatter(X[:, 0], X[:, 1], c = y, cmap = plt.cm.Set1,
 #plt.show()
 
 
-# Meanshift para iris
-
 if __name__ == "__main__":
-        
+
     iris = datasets.load_iris()
     dataset = iris
 
+    #############################################
+    # Meanshift en Iris
+    #############################################
+    
     meanshift = MeanShift().fit(X)
     print(meanshift.labels_)    
     print(len(meanshift.labels_))
